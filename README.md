@@ -21,7 +21,7 @@ The project was made with `6000.0.47f1`. Any `6000.0.x` works. If Hub warns abou
 - **Easiest:** green **Code** button → **Download ZIP**, then unzip it somewhere simple (e.g. `Documents`).
 - **With git:**
   ```
-  git clone REPO_URL.git
+  git clone https://github.com/ac0rdj/unity-mcp-workshop.git
   ```
 
 ### 3. Open it in Unity
