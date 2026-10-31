@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mountains
+  m_Shader: {fileID: 4800000, guid: ddefb8ceb842b7e4eae2e08c00d09972, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _GrassNormal:
+        m_Texture: {fileID: 2800000, guid: 5e86d07a2111ee2488c8b2402002e35a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GrassTex:
+        m_Texture: {fileID: 2800000, guid: 95bc051c68be49d4e831c885753c7d96, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MossTex:
+        m_Texture: {fileID: 2800000, guid: 70da8df70a6d2dc4fb6010ef5681b275, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RockNormal:
+        m_Texture: {fileID: 2800000, guid: 7e57730f9e52fa34e88c6f1bc5e52098, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RockTex:
+        m_Texture: {fileID: 2800000, guid: dc9b8d6302644604caf2a58e7aa74cdc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AOStrength: 1
+    - _GrassBlend: 0.12
+    - _GrassLevel: 0.55
+    - _GrassScale: 0.02
+    - _NormalStrength: 1.4
+    - _RockScale: 0.006
+    m_Colors:
+    - _GrassTint: {r: 0.4, g: 0.58, b: 0.3, a: 1}
+    - _MossTint: {r: 0.5, g: 0.68, b: 0.38, a: 1}
+    - _RockTint: {r: 0.6, g: 0.7, b: 0.72, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

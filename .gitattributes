@@ -1,0 +1,13 @@
+# Keep script line endings right no matter how the repo is downloaded.
+*.sh   text eol=lf
+*.ps1  text eol=crlf
+*.cmd  text eol=crlf
+
+# Unity binary assets
+*.png  binary
+*.jpg  binary
+*.exr  binary
+*.hdr  binary
+*.fbx  binary
+*.asset -diff
+*.unity -diff
