@@ -1,3 +1,5 @@
+📑 **Workshop slides:** [unity-mcp-workshop-deck.pptx](docs/unity-mcp-workshop-deck.pptx) (PowerPoint, 39 MB)
+
 # Unity MCP Workshop: ParkourBase
 
 A tiny first-person parkour game for learning **MCP**: you talk to an AI agent (Claude Code), and it works inside your running Unity editor for you.
