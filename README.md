@@ -13,15 +13,15 @@ Everything here is **free**. You don't need any API keys.
 ## Setup (about 10 minutes)
 
 ### 1. Install Unity 6
-Install **Unity Hub**, then in Hub go to **Installs → Install Editor → Unity 6 (6000.0.x)**.
+Install **Unity Hub**, then in Hub go to **Installs → Install Editor → Unity 6** (any `6000.x` version).
 - Windows / Mac: https://unity.com/download
 - Linux (Ubuntu): https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
 
-The project was made with `6000.0.47f1`. Any `6000.0.x` works. If Hub warns about the version, pick **Continue**.
+The project was made with `6000.0.47f1`, but any Unity 6 works. When Hub or Unity warns that the version is different, choose **Continue** / **Upgrade** (never Skip).
 
 > **Free about 15 GB of disk first.** The editor download is about 7 GB, and Unity's first import needs a few GB more. A full disk mid-install leaves a broken editor.
 >
-> A newer Unity 6 (for example `6000.6.x`) also ran every demo in testing, but Unity then upgrades the project's package files. Choose **Upgrade**, never Skip, and prefer `6000.0.x` if you can.
+> A different Unity 6 makes Unity update a few package files on the first open. That's normal. `6000.0.47f1` and `6000.6.5f1` both ran every demo in testing.
 
 ### 2. Download this project
 - **Easiest:** green **Code** button → **Download ZIP**, then unzip it somewhere simple (e.g. `Documents`).
@@ -111,7 +111,7 @@ Poly Haven gives you free CC0 models, textures and skies with no account.
 | Claude asks "which scene?", or reads `.unity` files itself | You started `claude` in the wrong folder. Close it and run `bash setup/start-mac-linux.sh` (Windows: open the terminal in the project folder). |
 | Not sure what's wrong | Mac / Linux: `bash setup/doctor-mac-linux.sh`. Every ✘ line says how to fix it. |
 | Unity install or import fails halfway | Almost always a full disk. Free 15 GB, delete the half-installed editor folder in Unity Hub, install again. |
-| Unity asks to upgrade the project | You have a newer Unity 6 than `6000.0.x`. Choose **Upgrade** (not Skip). It works, but it edits package files. |
+| Unity asks to upgrade or change the project's version | Normal when your Unity 6 differs from `6000.0.47f1`. Choose **Continue** / **Upgrade** (not Skip). |
 | `UnityMCP` ✘ in `/mcp` | Keep Unity open. **Window → MCP for Unity** should say *Session Active*. If not, click **Start Server**. |
 | `unity-official` missing | Open the project in Unity once (that installs Unity's relay), then run the setup script again. |
 | `unity-official` ✘ | Approve Claude under **Project Settings → AI → Unity MCP Server → Pending Connections**. |

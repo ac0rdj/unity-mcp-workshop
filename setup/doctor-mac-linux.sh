@@ -24,16 +24,18 @@ else bad "MCP for Unity package missing from Packages/manifest.json" "re-downloa
 
 step "Unity editor"
 WANT=$(sed -n 's/^m_EditorVersion: //p' ProjectSettings/ProjectVersion.txt 2>/dev/null | head -1)
-case "$(uname -s)" in Darwin) HUB="/Applications/Unity/Hub/Editor" ;; *) HUB="$HOME/Unity/Hub/Editor" ;; esac
-HAVE=$(ls "$HUB" 2>/dev/null | tr '\n' ' ')
+case "$(uname -s)" in
+  Darwin) HUB="/Applications/Unity/Hub/Editor"; HUB2F="$HOME/Library/Application Support/UnityHub/secondaryInstallPath.json" ;;
+  *)      HUB="$HOME/Unity/Hub/Editor";         HUB2F="$HOME/.config/UnityHub/secondaryInstallPath.json" ;;
+esac
+HUB2=""; [ -f "$HUB2F" ] && HUB2=$(tr -d '"' < "$HUB2F")   # editors installed to a custom folder
+HAVE=$( { ls "$HUB" 2>/dev/null; [ -n "$HUB2" ] && ls "$HUB2" 2>/dev/null; } | tr '\n' ' ')
 if [ -z "$HAVE" ]; then
-  bad "No Unity editor found in $HUB" "Unity Hub > Installs > Install Editor > Unity 6 (6000.0.x). Needs about 15 GB free."
+  bad "No Unity editor found in $HUB" "Unity Hub > Installs > Install Editor > any Unity 6. Needs about 15 GB free."
 elif echo " $HAVE" | grep -q " $WANT "; then ok "Unity $WANT installed (exact match)"
-elif echo " $HAVE" | grep -q " 6000\.0\."; then ok "Unity 6000.0.x installed ($HAVE), project wants $WANT. Fine."
 elif echo " $HAVE" | grep -q " 6000\."; then
-  warn "Only ${HAVE% } installed, project wants $WANT. Unity will upgrade the project and edit Packages/manifest.json." \
-       "safest: install 6000.0.x in Unity Hub. If you continue, choose Upgrade, not Skip."
-else bad "No Unity 6 editor found (have: $HAVE)" "Unity Hub > Installs > Install Editor > Unity 6 (6000.0.x)"; fi
+  ok "Unity 6 installed (${HAVE% }). Project was made on $WANT. When Unity asks about the version, choose Continue / Upgrade."
+else bad "No Unity 6 editor found (have: ${HAVE% })" "Unity Hub > Installs > Install Editor > any Unity 6"; fi
 
 step "Disk space"
 if [ -d /System/Volumes/Data ]; then TARGET=/System/Volumes/Data; else TARGET="$HOME"; fi
