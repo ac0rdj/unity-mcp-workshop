@@ -71,8 +71,12 @@ fi
 
 step "Unity is running and listening"
 PORT=$(claude mcp get UnityMCP 2>/dev/null | sed -n 's|.*127\.0\.0\.1:\([0-9]*\)/mcp.*|\1|p' | head -1); PORT="${PORT:-8080}"
-if lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; then ok "Something is listening on port $PORT (Unity's MCP server)"
-else warn "Nothing on port $PORT" "open this project in Unity. Window > MCP for Unity should say Session Active (else click Start Server)"; fi
+OWNER=$(lsof -nP -iTCP:"$PORT" -sTCP:LISTEN 2>/dev/null | awk 'NR==2{print $1}')
+if [ -z "$OWNER" ]; then
+  warn "Nothing on port $PORT" "open this project in Unity. Window > MCP for Unity should say Session Active (else click Start Server)"
+elif echo "$OWNER" | grep -qiE 'python|uv|unity|mcp'; then ok "Unity's MCP server is listening on port $PORT ($OWNER)"
+else warn "Port $PORT is used by '$OWNER', not Unity's MCP server" \
+          "pick a free port: bash setup/setup-mac-linux.sh --port 8092, then type http://127.0.0.1:8092 in Window > MCP for Unity"; fi
 case "$(uname -s)-$(uname -m)" in
   Darwin-arm64) RELAY="$HOME/.unity/relay/relay_mac_arm64.app/Contents/MacOS/relay_mac_arm64" ;;
   Darwin-*)     RELAY="$HOME/.unity/relay/relay_mac_x64.app/Contents/MacOS/relay_mac_x64" ;;
