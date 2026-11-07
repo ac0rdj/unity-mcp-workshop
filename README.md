@@ -46,7 +46,11 @@ bash setup/setup-mac-linux.sh
 
 Every line should show ✔ / `[ok]`. A `!` is a tip, not an error. If anything shows ✘ / `[x]`, fix what it says and run the script again.
 
-**Mac / Linux: check everything.** After Unity has opened the project, run:
+**Check everything.** After Unity has opened the project:
+
+**Windows:** double-click `setup\doctor-windows.cmd`.
+
+**Mac / Linux:**
 ```
 bash setup/doctor-mac-linux.sh
 ```
@@ -61,10 +65,7 @@ The connections are saved **per folder**. Claude Code started anywhere else can'
 ```
 bash setup/start-mac-linux.sh
 ```
-**Windows:** open a **new** terminal *in the project folder*, then:
-```
-claude
-```
+**Windows:** double-click `setup\start-windows.cmd`. (Or open a **new** terminal *in the project folder* and type `claude`.)
 The first time, it asks you to log in, then asks if you trust the folder. Pick **Yes, I trust this folder**.
 
 ![Trust prompt](docs/images/05a-claude-trust.png)
@@ -94,7 +95,9 @@ If it reads your scene back, you're ready. 🎉
 2. Run the setup script again. It installs the Blender add-on.
 3. **Mac / Linux, one command:** `bash setup/start-blender-mac-linux.sh` opens Blender with the add-on on, Poly Haven ticked and the server running. Done.
 
-**By hand (Windows, or if the command fails):**
+**Windows, one command:** double-click `setup\start-blender-windows.cmd`.
+
+**By hand (if the command fails):**
 3. In Blender: **Edit → Preferences → Add-ons**, search `MCP`, tick **Interface: MCP for Blender**.
 4. In the 3D view press **N** → **MCP for Blender** tab → tick **Poly Haven** → **Start MCP Server**.
 
@@ -108,8 +111,8 @@ Poly Haven gives you free CC0 models, textures and skies with no account.
 | Problem | Fix |
 |---|---|
 | `claude` / `uv` "not found" right after setup | Close the terminal and open a new one, so it picks up the newly installed tools. |
-| Claude asks "which scene?", or reads `.unity` files itself | You started `claude` in the wrong folder. Close it and run `bash setup/start-mac-linux.sh` (Windows: open the terminal in the project folder). |
-| Not sure what's wrong | Mac / Linux: `bash setup/doctor-mac-linux.sh`. Every ✘ line says how to fix it. |
+| Claude asks "which scene?", or reads `.unity` files itself | You started `claude` in the wrong folder. Close it and run `bash setup/start-mac-linux.sh` (Windows: double-click `setup\start-windows.cmd`). |
+| Not sure what's wrong | Run the doctor: `bash setup/doctor-mac-linux.sh` (Windows: double-click `setup\doctor-windows.cmd`). Every ✘ / `[x]` line says how to fix it. |
 | Unity install or import fails halfway | Almost always a full disk. Free 15 GB, delete the half-installed editor folder in Unity Hub, install again. |
 | Unity asks to upgrade or change the project's version | Normal when your Unity 6 differs from `6000.0.47f1`. Choose **Continue** / **Upgrade** (not Skip). |
 | `UnityMCP` ✘ in `/mcp` | Keep Unity open. **Window → MCP for Unity** should say *Session Active*. If not, click **Start Server**. |
