@@ -31,7 +31,7 @@ esac
 HUB2=""; [ -f "$HUB2F" ] && HUB2=$(tr -d '"' < "$HUB2F")   # editors installed to a custom folder
 HAVE=$( { ls "$HUB" 2>/dev/null; [ -n "$HUB2" ] && ls "$HUB2" 2>/dev/null; } | tr '\n' ' ')
 if [ -z "$HAVE" ]; then
-  bad "No Unity editor found in $HUB" "Unity Hub > Installs > Install Editor > any Unity 6. Needs about 15 GB free."
+  bad "No Unity editor found in $HUB" "Unity Hub > Installs > Install Editor > any Unity 6"
 elif echo " $HAVE" | grep -q " $WANT "; then ok "Unity $WANT installed (exact match)"
 elif echo " $HAVE" | grep -q " 6000\."; then
   ok "Unity 6 installed (${HAVE% }). Project was made on $WANT. When Unity asks about the version, choose Continue / Upgrade."
@@ -42,8 +42,8 @@ if [ -d /System/Volumes/Data ]; then TARGET=/System/Volumes/Data; else TARGET="$
 FREE=$(df -k "$TARGET" 2>/dev/null | awk 'NR==2{printf "%d", $4/1048576}')
 if [ -d Library ]; then NEED=3; else NEED=10; fi
 if [ -z "$FREE" ]; then warn "Couldn't read free disk space"
-elif [ "$FREE" -ge "$NEED" ]; then ok "${FREE} GB free"
-else bad "Only ${FREE} GB free (need about ${NEED} GB for Unity's first import)" "free space: empty the Trash, delete old downloads, or clear caches"; fi
+elif [ "$FREE" -ge "$NEED" ]; then ok "Enough free disk space"
+else bad "Your disk is almost full. Unity needs some room to open the project" "free some space: empty the Trash and delete old downloads, then try again"; fi
 
 step "Internet"
 for u in https://api.anthropic.com https://github.com https://mcp.context7.com/mcp; do

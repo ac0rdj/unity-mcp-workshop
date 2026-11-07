@@ -42,7 +42,7 @@ $sec = Join-Path $env:APPDATA 'UnityHub\secondaryInstallPath.json'   # editors i
 if (Test-Path $sec) { $p = (Get-Content $sec -Raw).Trim().Trim('"'); if ($p) { $hubDirs += $p } }
 $have = @()
 foreach ($d in $hubDirs) { if (Test-Path $d) { $have += @(Get-ChildItem $d -Directory | Select-Object -ExpandProperty Name) } }
-if ($have.Count -eq 0) { Bad "No Unity editor found in $($hubDirs[0])" 'Unity Hub > Installs > Install Editor > any Unity 6. Needs about 15 GB free.' }
+if ($have.Count -eq 0) { Bad "No Unity editor found in $($hubDirs[0])" 'Unity Hub > Installs > Install Editor > any Unity 6' }
 elseif ($have -contains $want) { Ok "Unity $want installed (exact match)" }
 elseif (@($have | Where-Object { $_ -like '6000.*' }).Count -gt 0) {
     Ok "Unity 6 installed ($($have -join ', ')). Project was made on $want. When Unity asks about the version, choose Continue / Upgrade."
@@ -52,8 +52,8 @@ else { Bad "No Unity 6 editor found (have: $($have -join ', '))" 'Unity Hub > In
 Step 'Disk space'
 $freeGB = [math]::Floor((Get-Item .).PSDrive.Free / 1GB)
 $need = 10; if (Test-Path 'Library') { $need = 3 }
-if ($freeGB -ge $need) { Ok "$freeGB GB free" }
-else { Bad "Only $freeGB GB free (need about $need GB for Unity's first import)" 'free space: empty the Recycle Bin, delete old downloads, or run Disk Cleanup' }
+if ($freeGB -ge $need) { Ok 'Enough free disk space' }
+else { Bad 'Your disk is almost full. Unity needs some room to open the project' 'free some space: empty the Recycle Bin and delete old downloads, then try again' }
 
 Step 'Internet'
 foreach ($u in 'https://api.anthropic.com', 'https://github.com', 'https://mcp.context7.com/mcp') {
