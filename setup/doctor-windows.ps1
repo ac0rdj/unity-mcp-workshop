@@ -100,9 +100,10 @@ else { Warn "Unity's official relay not installed yet" 'open the project in Unit
 Step 'Blender (Art track only, optional)'
 $bl = Get-ChildItem "$env:ProgramFiles\Blender Foundation\Blender*\blender.exe" -ErrorAction SilentlyContinue
 if ($bl -or (Has blender)) {
-    $addon = Get-ChildItem "$env:APPDATA\Blender Foundation\Blender" -Directory -ErrorAction SilentlyContinue |
-        ForEach-Object { Join-Path $_.FullName 'scripts\addons\blender_mcp.py' } | Where-Object { Test-Path $_ } | Select-Object -First 1
-    if ($addon) { Ok 'Add-on installed' } else { Warn 'Add-on not installed' 'setup\start-blender-windows.cmd' }
+    $addonVers = @(Get-ChildItem "$env:APPDATA\Blender Foundation\Blender" -Directory -ErrorAction SilentlyContinue |
+        Where-Object { Test-Path (Join-Path $_.FullName 'scripts\addons\blender_mcp.py') } | Select-Object -ExpandProperty Name)
+    if ($addonVers.Count -gt 0) { Ok "Add-on installed for Blender $($addonVers -join ', ')  (start-blender-windows.cmd adds it to the version it opens)" }
+    else { Warn 'Add-on not installed' 'setup\start-blender-windows.cmd' }
     if (Listening 9876) { Ok 'Blender is listening on port 9876' } else { Warn "Blender isn't listening on 9876" 'setup\start-blender-windows.cmd' }
 }
 else { Warn 'Blender not installed (only needed for the Art track)' 'https://www.blender.org/download/' }
@@ -113,6 +114,7 @@ if ($Full -and $haveClaude) {
     foreach ($s in 'UnityMCP', 'unity-official', 'blender', 'context7') {
         $line = ($out -split "`n" | Where-Object { $_ -match "^$s`:" } | Select-Object -First 1)
         if ($line -and ($line -match 'Connected') -and ($line -notmatch 'fail')) { Ok "$s connected" }
+        elseif (-not $line) { Bad "$s is not in the connection list" 'setup\setup-windows.cmd (it is saved per folder), or the list timed out: run again' }
         else { Bad "$s not connected: $line" 'see the Troubleshooting table in README.md' }
     }
 }
