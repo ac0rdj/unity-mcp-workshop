@@ -120,7 +120,24 @@ Poly Haven gives you free CC0 models, textures and skies with no account.
 | `unity-official` ✘ | Approve Claude under **Project Settings → AI → Unity MCP Server → Pending Connections**. |
 | `blender` ✘ | Blender must be open with **Start MCP Server** clicked (port 9876). |
 | Windows: "running scripts is disabled" | Use `setup-windows.cmd`. It runs the script without changing your settings. |
+| Windows: antivirus blocks `.cmd` or script files | Skip the scripts: see *Windows: antivirus blocks the `.cmd` / script?* above (winget, then `claude` in a terminal opened in the project folder). |
 | Mac: "permission denied" on the script | Run it with `bash setup/setup-mac-linux.sh` (don't use `./`). |
+
+### Windows: antivirus blocks the `.cmd` / script?
+Antivirus and SmartScreen often block `.cmd` and PowerShell scripts. Don't turn protection off. Skip the scripts. Nothing here needs them:
+
+1. **Install the tools** (open **Windows Terminal** or PowerShell, paste one line at a time):
+   ```
+   winget install --id Git.Git -e
+   winget install --id astral-sh.uv -e
+   winget install --id Anthropic.ClaudeCode -e
+   ```
+   Close the terminal and open a new one so the tools are found.
+2. **Open a terminal in the project folder:** in File Explorer, right-click the folder → **Open in Terminal**.
+3. **Connect the tools:** paste the `claude mcp add` lines from *Manual setup* below.
+4. **Start Claude** in that same terminal: `claude`.
+
+SmartScreen asking "Windows protected your PC" on a `.cmd` file? Click **More info → Run anyway**. If your antivirus keeps quarantining the `setup` folder, add the project folder as an exclusion rather than disabling it.
 
 ### Manual setup (if you'd rather not run a script)
 Run these in the project folder after installing [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Claude Code](https://code.claude.com/docs/en/setup):
