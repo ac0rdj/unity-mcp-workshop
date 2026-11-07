@@ -84,11 +84,20 @@ if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/
 fi
 
 step "5/5  Blender add-on (Art track only, optional)"
-if [ -d "/Applications/Blender.app" ] || command -v blender >/dev/null 2>&1; then
-  if command -v uvx >/dev/null 2>&1 && uvx mcp-for-blender install-addon >/dev/null 2>&1; then
-    ok "Add-on copied. In Blender: Edit > Preferences > Add-ons, search \"MCP\", tick \"Interface: MCP for Blender\" (or restart Blender)."
-  else
+if ls -d /Applications/Blender*.app >/dev/null 2>&1 || command -v blender >/dev/null 2>&1; then
+  # The installer alone picks one Blender folder (often the newest, not the one you use).
+  # Copy the add-on into every Blender version folder that exists.
+  COPIED=0
+  for d in "$HOME"/Library/Application\ Support/Blender/*/ "$HOME"/.config/blender/*/; do
+    [ -d "$d" ] || continue
+    if uvx mcp-for-blender install-addon --addons-dir "${d}scripts/addons" >/dev/null 2>&1; then
+      ok "Add-on copied for Blender $(basename "$d")"; COPIED=1
+    fi
+  done
+  if [ "$COPIED" -eq 0 ]; then
     warn "Couldn't copy the add-on. Open Blender once (so it creates its settings folder), then run this again."
+  else
+    ok "Blender is set up. To start it with the add-on on, run:  bash setup/start-blender-mac-linux.sh"
   fi
 else
   warn "Blender not found. Skip this unless you pick the Art track (get it free at blender.org, open it once, re-run)."
@@ -96,7 +105,8 @@ fi
 
 echo
 if [ "$FAILED" -eq 0 ]; then
-  printf '\033[32mDone.\033[0m Next: open the project in Unity, then in this folder run:  claude\n'
+  printf '\033[32mDone.\033[0m Next: open the project in Unity, then run:  bash setup/doctor-mac-linux.sh\n'
+  echo "Then start Claude with:  bash setup/start-mac-linux.sh   (always from this project, never from another folder)"
 else
   printf '\033[31mSome steps failed (see ✘ above).\033[0m Fix them and run this script again.\n'
 fi
