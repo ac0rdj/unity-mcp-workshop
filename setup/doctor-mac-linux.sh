@@ -31,11 +31,11 @@ esac
 HUB2=""; [ -f "$HUB2F" ] && HUB2=$(tr -d '"' < "$HUB2F")   # editors installed to a custom folder
 HAVE=$( { ls "$HUB" 2>/dev/null; [ -n "$HUB2" ] && ls "$HUB2" 2>/dev/null; } | tr '\n' ' ')
 if [ -z "$HAVE" ]; then
-  bad "No Unity editor found in $HUB" "Unity Hub > Installs > Install Editor > any Unity 6"
+  warn "Couldn't find a Unity editor in the usual place" "install Unity 6 from Unity Hub. If you already did, ignore this"
 elif echo " $HAVE" | grep -q " $WANT "; then ok "Unity $WANT installed (exact match)"
 elif echo " $HAVE" | grep -q " 6000\."; then
   ok "Unity 6 installed (${HAVE% }). Project was made on $WANT. When Unity asks about the version, choose Continue / Upgrade."
-else bad "No Unity 6 editor found (have: ${HAVE% })" "Unity Hub > Installs > Install Editor > any Unity 6"; fi
+else warn "No Unity 6 editor found (have: ${HAVE% })" "install Unity 6 from Unity Hub. If you already did, ignore this"; fi
 
 step "Disk space"
 if [ -d /System/Volumes/Data ]; then TARGET=/System/Volumes/Data; else TARGET="$HOME"; fi
@@ -109,6 +109,8 @@ if [ "$FULL" -eq 1 ] && command -v claude >/dev/null 2>&1; then
 fi
 
 echo
-if [ "$FAILED" -eq 0 ]; then printf '\033[32mAll good.\033[0m Start Claude with:  bash setup/start-mac-linux.sh\n'
+if [ "$FAILED" -eq 0 ]; then
+  if [ -n "${START_HERE:-}" ]; then printf '\033[32mAll good.\033[0m\n'
+  else printf '\033[32mAll good.\033[0m To open Claude, run:  bash START-HERE-mac-linux.sh\n'; fi
 else printf '\033[31mFix the ✘ lines above, then run this again.\033[0m\n'; fi
 exit "$FAILED"

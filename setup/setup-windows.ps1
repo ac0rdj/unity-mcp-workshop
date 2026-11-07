@@ -93,10 +93,12 @@ else { Warn 'Blender not found. Skip this unless you pick the Art track (get it 
 
 Write-Host ''
 if (-not $script:Failed) {
-    Write-Host 'Done. ' -ForegroundColor Green -NoNewline
-    Write-Host 'Next: open the project in Unity, then double-click setup\doctor-windows.cmd'
-    Write-Host 'Then start Claude by double-clicking setup\start-windows.cmd (always from this project)'
-    Write-Host '(Open a NEW terminal first so it picks up the newly installed tools.)'
+    if ($env:START_HERE) { Write-Host 'Setup done.' -ForegroundColor Green }
+    else {
+        Write-Host 'Done. ' -ForegroundColor Green -NoNewline
+        Write-Host 'Next: open the project in Unity, then double-click START-HERE-windows.cmd'
+        Write-Host '(Open a NEW terminal first so it picks up the newly installed tools.)'
+    }
     exit 0
 }
 Write-Host 'Some steps failed (see [x] above). Fix them and run this script again.' -ForegroundColor Red

@@ -42,12 +42,12 @@ $sec = Join-Path $env:APPDATA 'UnityHub\secondaryInstallPath.json'   # editors i
 if (Test-Path $sec) { $p = (Get-Content $sec -Raw).Trim().Trim('"'); if ($p) { $hubDirs += $p } }
 $have = @()
 foreach ($d in $hubDirs) { if (Test-Path $d) { $have += @(Get-ChildItem $d -Directory | Select-Object -ExpandProperty Name) } }
-if ($have.Count -eq 0) { Bad "No Unity editor found in $($hubDirs[0])" 'Unity Hub > Installs > Install Editor > any Unity 6' }
+if ($have.Count -eq 0) { Warn "Couldn't find a Unity editor in the usual place" 'install Unity 6 from Unity Hub. If you already did, ignore this' }
 elseif ($have -contains $want) { Ok "Unity $want installed (exact match)" }
 elseif (@($have | Where-Object { $_ -like '6000.*' }).Count -gt 0) {
     Ok "Unity 6 installed ($($have -join ', ')). Project was made on $want. When Unity asks about the version, choose Continue / Upgrade."
 }
-else { Bad "No Unity 6 editor found (have: $($have -join ', '))" 'Unity Hub > Installs > Install Editor > any Unity 6' }
+else { Warn "No Unity 6 editor found (have: $($have -join ', '))" 'install Unity 6 from Unity Hub. If you already did, ignore this' }
 
 Step 'Disk space'
 $freeGB = [math]::Floor((Get-Item .).PSDrive.Free / 1GB)
@@ -124,7 +124,7 @@ if ($Full -and $haveClaude) {
 Write-Host ''
 if (-not $script:Failed) {
     Write-Host 'All good. ' -ForegroundColor Green -NoNewline
-    Write-Host 'Start Claude with:  setup\start-windows.cmd'
+    if (-not $env:START_HERE) { Write-Host 'To open Claude, double-click START-HERE-windows.cmd' } else { Write-Host '' }
     exit 0
 }
 Write-Host 'Fix the [x] lines above, then run this again.' -ForegroundColor Red

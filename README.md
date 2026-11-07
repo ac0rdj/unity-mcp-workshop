@@ -12,7 +12,7 @@ Everything here is **free**. You don't need any API keys.
 
 ## Setup (about 10 minutes)
 
-Do the steps in order. Each step says what you should see.
+Do the steps in order. There are only six.
 
 ### 1. Install Unity 6
 Install **Unity Hub**. In Hub, go to **Installs → Install Editor** and pick **Unity 6** (any `6000.x` version).
@@ -20,8 +20,6 @@ Install **Unity Hub**. In Hub, go to **Installs → Install Editor** and pick **
 - Linux (Ubuntu): https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
 
 Do this before the workshop, because the download is large.
-
-Your version doesn't need to match. The project was made with `6000.0.47f1`. When Unity asks about a different version, choose **Continue** or **Upgrade**. Never choose Skip.
 
 ### 2. Download this project
 - **Easiest:** click the green **Code** button, choose **Download ZIP**, and unzip it somewhere simple (for example `Documents`).
@@ -33,53 +31,37 @@ Your version doesn't need to match. The project was made with `6000.0.47f1`. Whe
 ### 3. Open it in Unity
 In Unity Hub, click **Add → Add project from disk**, pick the folder, and open it.
 
-The first open takes a few minutes. The MCP packages are already included, and the MCP server starts by itself. You're done when the **Console** at the bottom of Unity shows no red errors.
+- The first open takes a few minutes.
+- If Unity says the version is different, choose **Continue** or **Upgrade**. Never choose Skip.
+- You're done when the **Console** at the bottom of Unity shows no red errors.
 
-### 4. Run the setup
-This installs anything missing and connects Claude Code to Unity, Blender and the Unity docs. It's safe to run again.
+### 4. Start here
+This one step installs what's missing, connects Claude to Unity, checks everything, and opens Claude.
 
-- **Windows:** open the `setup` folder and double-click **`setup-windows.cmd`**.
+- **Windows:** double-click **`START-HERE-windows.cmd`** in the project folder.
 - **Mac / Linux:** open Terminal in the project folder and paste:
   ```
-  bash setup/setup-mac-linux.sh
+  bash START-HERE-mac-linux.sh
   ```
 
-Every line should show ✔ or `[ok]`. A `!` is a tip, not an error. If a line shows ✘ or `[x]`, do what it says, then run the setup again.
-
-> **Antivirus blocked it?** You can skip the scripts. See [Antivirus blocks the scripts](#antivirus-blocks-the-scripts) below.
-
-### 5. Check everything
-- **Windows:** double-click **`setup\doctor-windows.cmd`**.
-- **Mac / Linux:**
-  ```
-  bash setup/doctor-mac-linux.sh
-  ```
-
-It prints one line per check. Green means ready. Each red line tells you the exact fix. It changes nothing, so run it as often as you like.
-
-### 6. Start Claude Code
-Always start Claude from the project, never from another folder. The connections belong to the project folder, and Claude can't see Unity from anywhere else.
-
-- **Windows:** double-click **`setup\start-windows.cmd`**.
-- **Mac / Linux:** open a **new** terminal in the project folder and paste:
-  ```
-  bash setup/start-mac-linux.sh
-  ```
+If a line turns red, do what it says, then run it again. You can run it as many times as you like.
 
 The first time, Claude asks you to log in. Then it asks if you trust the folder. Pick **Yes, I trust this folder**.
 
 ![Trust prompt](docs/images/05a-claude-trust.png)
 
-Type `/mcp`. You should see `UnityMCP`, `unity-official`, `blender` and `context7` with ✔:
+To check the connections, type `/mcp`. You should see `UnityMCP`, `unity-official`, `blender` and `context7` with ✔:
 
 ![/mcp](docs/images/05-claude-mcp.png)
 
-### 7. Approve Unity's own MCP (once)
+> **Antivirus blocked it?** You can skip the scripts. See [Antivirus blocks the scripts](#antivirus-blocks-the-scripts) below.
+
+### 5. Approve Unity's own MCP (once)
 The first time Claude connects, Unity asks you to approve it. Go to **Edit → Project Settings → AI → Unity MCP Server**. Click **Accept** on the notice. Then approve Claude under **Pending Connections**.
 
 ![Unity MCP Server settings](docs/images/03-official-mcp.png)
 
-### 8. Say hi
+### 6. Say hi
 Type, or say with voice dictation:
 ```
 List the root objects in the open Unity scene and tell me if there are any console errors.
@@ -88,11 +70,13 @@ If Claude reads your scene back, you're ready. 🎉
 
 ![Smoke test](docs/images/06-smoke-test.png)
 
+**Next time:** open the project in Unity, then run **START-HERE** again. It opens Claude in the right place.
+
 ---
 
 ## Optional: Blender (Art track)
 1. Install Blender 4.x or newer from https://www.blender.org/download/ and open it once.
-2. Run the setup again (step 4). It installs the Blender add-on.
+2. Run **START-HERE** again, so it installs the Blender add-on.
 3. Start Blender with everything switched on:
    - **Windows:** double-click **`setup\start-blender-windows.cmd`**.
    - **Mac / Linux:** `bash setup/start-blender-mac-linux.sh`
@@ -110,21 +94,20 @@ Poly Haven gives you free CC0 models, textures and skies. You don't need an acco
 ---
 
 ## Something not working?
-First, run the check from step 5. Each red line says how to fix it.
+Run **START-HERE** again. It checks everything, and each red line says how to fix it.
 
 | Problem | Fix |
 |---|---|
-| Claude asks "which scene?" or reads `.unity` files itself | You started Claude in the wrong folder. Close it and use the start script from step 6. |
+| Claude asks "which scene?" or reads `.unity` files itself | You started Claude somewhere else. Close it and use **START-HERE**. |
 | `claude` or `uv` "not found" right after setup | Close the terminal and open a new one. |
 | Unity asks about the project's version | Normal. Choose **Continue** or **Upgrade**, never Skip. |
 | The Unity install or first open stalls | Your disk may be full. Empty the Trash or Recycle Bin, then install again from Unity Hub. |
 | `UnityMCP` ✘ in `/mcp` | Keep Unity open. **Window → MCP for Unity** should say *Session Active*. If not, click **Start Server**. |
-| `unity-official` missing | Open the project in Unity once, then run the setup again. |
 | `unity-official` ✘ | Approve Claude under **Project Settings → AI → Unity MCP Server → Pending Connections**. |
 | `blender` ✘ | Start Blender with the Blender step above (port 9876). |
-| Port 8080 is already in use | Run the setup again with another port: `--port 8092` on Mac / Linux, `setup-windows.cmd -Port 8092` on Windows. Then type `http://127.0.0.1:8092` into **Window → MCP for Unity**. |
-| Windows: "running scripts is disabled" | Use `setup-windows.cmd`. It runs the script without changing your settings. |
-| Mac: "permission denied" on a script | Run it with `bash`, for example `bash setup/setup-mac-linux.sh`. Don't use `./`. |
+| Port 8080 is already in use | Run START-HERE with another port: `--port 8092` (Windows: add it after the file name in a terminal). Then type `http://127.0.0.1:8092` into **Window → MCP for Unity**. |
+| Windows: "running scripts is disabled" | Use `START-HERE-windows.cmd`. It runs without changing your settings. |
+| Mac: "permission denied" | Run it with `bash`, as in step 4. Don't use `./`. |
 
 ### Antivirus blocks the scripts
 Antivirus and SmartScreen often block `.cmd` and PowerShell files. Don't turn your antivirus off. Skip the scripts instead. Nothing here needs them.

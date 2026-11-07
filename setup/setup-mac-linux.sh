@@ -105,8 +105,10 @@ fi
 
 echo
 if [ "$FAILED" -eq 0 ]; then
-  printf '\033[32mDone.\033[0m Next: open the project in Unity, then run:  bash setup/doctor-mac-linux.sh\n'
-  echo "Then start Claude with:  bash setup/start-mac-linux.sh   (always from this project, never from another folder)"
+  if [ -n "${START_HERE:-}" ]; then printf '\033[32mSetup done.\033[0m\n'
+  else
+    printf '\033[32mDone.\033[0m Next: open the project in Unity, then run:  bash START-HERE-mac-linux.sh\n'
+  fi
 else
   printf '\033[31mSome steps failed (see ✘ above).\033[0m Fix them and run this script again.\n'
 fi
