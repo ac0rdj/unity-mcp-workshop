@@ -82,6 +82,8 @@ if ($haveClaude) {
 }
 
 Step 'Unity is running and listening'
+if (Get-Process Unity -ErrorAction SilentlyContinue) { Ok 'The Unity editor is open' }
+else { Warn "The Unity editor isn't open" 'open this project in Unity Hub. Claude can only see Unity while the editor is open' }
 $port = 8080
 if ($haveClaude) {
     $o = (claude mcp get UnityMCP 2>&1) | Out-String

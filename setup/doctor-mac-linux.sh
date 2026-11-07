@@ -70,6 +70,8 @@ if command -v claude >/dev/null 2>&1; then
 fi
 
 step "Unity is running and listening"
+if pgrep -fi "unity.*-projectpath" >/dev/null 2>&1; then ok "The Unity editor is open"
+else warn "The Unity editor isn't open" "open this project in Unity Hub. Claude can only see Unity while the editor is open"; fi
 PORT=$(claude mcp get UnityMCP 2>/dev/null | sed -n 's|.*127\.0\.0\.1:\([0-9]*\)/mcp.*|\1|p' | head -1); PORT="${PORT:-8080}"
 OWNER=$(lsof -nP -iTCP:"$PORT" -sTCP:LISTEN 2>/dev/null | awk 'NR==2{print $1}')
 if [ -z "$OWNER" ]; then
