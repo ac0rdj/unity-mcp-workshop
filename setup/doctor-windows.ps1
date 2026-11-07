@@ -87,8 +87,13 @@ if ($haveClaude) {
     $o = (claude mcp get UnityMCP 2>&1) | Out-String
     if ($o -match '127\.0\.0\.1:(\d+)/mcp') { $port = [int]$Matches[1] }
 }
-if (Listening $port) { Ok "Something is listening on port $port (Unity's MCP server)" }
-else { Warn "Nothing on port $port" 'open this project in Unity. Window > MCP for Unity should say Session Active (else click Start Server)' }
+$conn = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $conn) { Warn "Nothing on port $port" 'open this project in Unity. Window > MCP for Unity should say Session Active (else click Start Server)' }
+else {
+    $owner = (Get-Process -Id $conn.OwningProcess -ErrorAction SilentlyContinue).ProcessName
+    if ($owner -match 'python|uv|unity|mcp') { Ok "Unity's MCP server is listening on port $port ($owner)" }
+    else { Warn "Port $port is used by '$owner', not Unity's MCP server" "pick a free port: setup\setup-windows.cmd -Port 8092, then type http://127.0.0.1:8092 in Window > MCP for Unity" }
+}
 if (Test-Path (Join-Path $env:USERPROFILE '.unity\relay\relay_win.exe')) { Ok "Unity's official relay is installed" }
 else { Warn "Unity's official relay not installed yet" 'open the project in Unity once, then run setup again' }
 
