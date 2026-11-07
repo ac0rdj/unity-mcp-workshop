@@ -87,8 +87,10 @@ else warn "Unity's official relay not installed yet" "open the project in Unity 
 
 step "Blender (Art track only, optional)"
 if ls -d /Applications/Blender*.app >/dev/null 2>&1 || command -v blender >/dev/null 2>&1; then
-  ADD=$(ls "$HOME"/Library/Application\ Support/Blender/*/scripts/addons/blender_mcp.py "$HOME"/.config/blender/*/scripts/addons/blender_mcp.py 2>/dev/null | head -1)
-  if [ -n "$ADD" ]; then ok "Add-on installed"; else warn "Add-on not installed" "bash setup/setup-mac-linux.sh"; fi
+  ADDV=$(ls "$HOME"/Library/Application\ Support/Blender/*/scripts/addons/blender_mcp.py "$HOME"/.config/blender/*/scripts/addons/blender_mcp.py 2>/dev/null \
+         | sed -E 's|.*/[Bb]lender/([0-9.]+)/.*|\1|' | tr '\n' ' ')
+  if [ -n "$ADDV" ]; then ok "Add-on installed for Blender ${ADDV% }  (start-blender-mac-linux.sh adds it to the version it opens)"
+  else warn "Add-on not installed" "bash setup/setup-mac-linux.sh"; fi
   if lsof -nP -iTCP:9876 -sTCP:LISTEN >/dev/null 2>&1; then ok "Blender is listening on port 9876"
   else warn "Blender isn't listening on 9876" "bash setup/start-blender-mac-linux.sh"; fi
 else warn "Blender not installed (only needed for the Art track)" "https://www.blender.org/download/"; fi
@@ -99,6 +101,7 @@ if [ "$FULL" -eq 1 ] && command -v claude >/dev/null 2>&1; then
   for s in UnityMCP unity-official blender context7; do
     line=$(printf '%s\n' "$OUT" | grep -E "^$s:" | head -1)
     if printf '%s' "$line" | grep -q '✔ Connected'; then ok "$s connected"
+    elif [ -z "$line" ]; then bad "$s is not in the connection list" "bash setup/setup-mac-linux.sh (it is saved per folder), or the list timed out: run again"
     else bad "$s not connected: $(printf '%s' "$line" | sed -E 's/^.* - //')" "see the Troubleshooting table in README.md"; fi
   done
 fi
